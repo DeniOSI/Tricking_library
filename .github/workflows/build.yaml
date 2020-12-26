@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
        - uses: actions/checkout@v2
-       - name current directory
+       - name: current directory
         run : pwd
-       - run : ls
+       - name: File list
+        run : ls
