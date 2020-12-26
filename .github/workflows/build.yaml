@@ -11,4 +11,4 @@ jobs:
       - run : pwd
       -  run : dotnet build
       -  run : ls TrickingLibrary.Api -R
-           - run: npm -v
+      - run: npm -v
