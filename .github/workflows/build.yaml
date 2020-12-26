@@ -1,0 +1,15 @@
+name: build_my_app
+
+on: push
+
+jobs:
+  build:
+    name: build_apps
+    runs-on: ubuntu-latest
+    steps:
+      - name: pull code
+       uses: actions/checkout@v2
+      - name: print current dicrectory
+       run : pwd
+      - name: list of files
+        run : ls
