@@ -4,12 +4,12 @@ on: push
 
 jobs:
   build:
-    name: build_apps
+    name: Build our App
     runs-on: ubuntu-latest
     steps:
-      - name: pull code
+      - name: Pull Code
        uses: actions/checkout@v2
-      - name: print current dicrectory
+      - name: Print Current Directory
        run : pwd
-      - name: list of files
+      - name: List Filed in Directory
         run : ls
