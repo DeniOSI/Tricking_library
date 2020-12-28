@@ -32,6 +32,8 @@ namespace TrickingLibrary.Api
                         .AllowAnyHeader()
                         .AllowAnyOrigin())
             );
+            
+            services.AddSingleton(typeof(TrickyStore));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

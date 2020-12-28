@@ -8,6 +8,7 @@
       <v-card>
         <v-card-title class="headline">
           {{ message }}
+          <v-btn @click="reset">Rest</v-btn>
         </v-card-title>
         <v-card-text>
           <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower
@@ -81,22 +82,36 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
-import Axios from "axios";
+import {mapState, mapActions, mapMutations} from 'vuex'
 
 export default {
   components: {
     Logo,
     VuetifyLogo
   },
-  data: () => ({
-    message: ""
+  // data: () => ({
+  //   message: ""
+  // }),
+  computed: mapState({
+    message: state => state.message
   }),
-  asyncData(payload){
-   return Axios.get("http://localhost:5000/api/home/")
-      .then(({data}) => {
-        return {message: data}
-      })
-  }
+  // fetch: async function () {
+  //   console.log("test fetchMessage")
+  //   // await this.$store.dispatch("fetchMessage");
+  //  await this.$store.dispatch('fetchMessage');
+  // }
+  // asyncData(payload){
+  //   console.log("Just test")
+  //  return Axios.get("http://localhost:5000/api/home/")
+  //     .then(({data}) => {
+  //       return {message: data}
+  //     })
+  // }
+
+  methods: mapMutations([
+    'reset',
+    'setMessage'
+  ])
 
 }
 </script>
