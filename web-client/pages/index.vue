@@ -1,27 +1,30 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <logo/>
-        <vuetify-logo/>
-      </div>   
+
+ <div>
           {{ message }}
-          {{tricks}}
-          <v-btn @click="reset">Reset</v-btn>   
-    </v-col>
-  </v-row>
+      <v-btn @click="reset">Reset message</v-btn>
+
+      <div v-if="tricks">
+
+        <p v-for="t in tricks">
+        {{t.name}}
+      </p>
+      </div>
+
+      <v-text-field v-model="trickName"></v-text-field>
+      <v-btn @click="saveTrick">Save trick</v-btn>
+
+      <v-btn @click="resetTricks">Reset tricks</v-btn>
+ </div>
+
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+
 import {mapState, mapActions, mapMutations} from 'vuex'
 
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
-  },
+
   data: () => ({
     trickName: ""
   }),
