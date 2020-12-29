@@ -16,38 +16,48 @@
 
       <v-btn @click="resetTricks">Reset tricks</v-btn>
  </div>
-
 </template>
 
 <script>
 
 import {mapState, mapActions, mapMutations} from 'vuex'
+import Axios from "axios";
 
 export default {
 
   data: () => ({
     trickName: ""
   }),
-  computed:{ 
+  computed: {
     ...mapState({
-    message: state => state.message}),
+      message: state => state.message
+    }),
     ...mapState('tricks', {
-    tricks: state => state.tricks})    
-    },
+      tricks: state => state.tricks
+    })
+  },
   methods: {
     ...mapMutations([
-    'reset'    
-  ]),
-  ...mapMutations({
-     resetTricks: 'reset'
-  }),
-  ...mapActions('tricks', ['createTrick']),
-  async saveTrick(){
-    await this.createTrick(this.trickName)
+      'reset'
+    ]),
+    ...mapMutations({
+      resetTricks: 'reset'
+    }),
+    ...mapActions('tricks', ['createTrick']),
+    async saveTrick() {
+      await this.createTrick(this.trickName)
+    },
+    async handleFile(file){
+      if(!file)
+      return;
+      console.log(file)
+        const result =  new FormData();
+        result.append("video", file)
+        await Axios.post('http://localhost:5000/api/videos', result);
+    }
   }
-  }
- 
- 
+
+
   // fetch: async function () {
   //   console.log("test fetchMessage")
   //   // await this.$store.dispatch("fetchMessage");
@@ -61,7 +71,6 @@ export default {
   //     })
   // }
 
- 
 
 }
 </script>
