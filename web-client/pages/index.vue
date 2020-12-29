@@ -1,44 +1,30 @@
 <template>
 
-  <div>
+ <div>
+          {{ message }}
+      <v-btn @click="reset">Reset message</v-btn>
 
-    <v-file-input
-      label="File input"
-      outlined
-      dense
-      @change="handleFile"
-      accept = "video/*"
-    ></v-file-input>
+      <div v-if="tricks">
 
-    {{ message }}
-    <v-btn @click="reset">Reset message</v-btn>
-
-    <div v-if="tricks">
-
-      <p v-for="t in tricks">
-        {{ t.name }}
+        <p v-for="t in tricks">
+        {{t.name}}
       </p>
-    </div>
+      </div>
 
-    <v-text-field v-model="trickName"></v-text-field>
-    <v-btn @click="saveTrick">Save trick</v-btn>
+      <v-text-field v-model="trickName"></v-text-field>
+      <v-btn @click="saveTrick">Save trick</v-btn>
 
-    <v-btn @click="resetTricks">Reset tricks</v-btn>
-  </div>
-
+      <v-btn @click="resetTricks">Reset tricks</v-btn>
+ </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+
 import {mapState, mapActions, mapMutations} from 'vuex'
 import Axios from "axios";
 
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
-  },
+
   data: () => ({
     trickName: ""
   }),
