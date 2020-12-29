@@ -18,10 +18,11 @@ export const mutations = {
 export const actions = {
   async fetchTricks({commit}){
     const tricks = (await Axios.get("http://localhost:5000/api/tricks")).data;
-    commit('setTricks');
+    commit('setTricks', {tricks});
   },
   async createTrick({commit, dispatch}, {trick})
   {
+    console.log(trick)
     await Axios.post("http://localhost:5000/api/tricks", trick);
     dispatch('fetchTricks');
   }
