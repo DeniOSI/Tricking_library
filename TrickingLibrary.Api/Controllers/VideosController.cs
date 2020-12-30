@@ -21,7 +21,7 @@ namespace TrickingLibrary.Api.Controllers
         public async Task<IActionResult> UploadVideo(IFormFile video)
         {
             var mimeType = video.FileName.Split('.').Last();
-            var fileName = string.Concat(Path.GetRandomFileName(), '.', mimeType);
+            var fileName = string.Concat(Path.GetRandomFileName().Replace('.', '_'), '.', mimeType);
             var filePath = string.Concat(_webHost.WebRootPath,'/', fileName);
             await using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
             await video.CopyToAsync(fileStream);
