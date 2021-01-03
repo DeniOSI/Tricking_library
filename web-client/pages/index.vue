@@ -1,53 +1,55 @@
 <template>
-
   <div>
-    <v-file-input show-size label="File input" accept="video/*" @change="handleFile"></v-file-input>
-
     <div v-if="tricks">
-      <p v-for="t in tricks">
-        {{ t.name }} </p>
+      <div v-for="t in tricks">
+        {{ t.name }}
+        <div>
+          <video width="400" controls :src="`http://localhost:5000/api/videos/${t.video}`"></video>
+        </div>
+      </div>
     </div>
-
-    <v-text-field v-model="trickName"></v-text-field>
-    <v-btn @click="saveTrick">Save trick</v-btn>
-    <v-stepper v-model="step">
-      <v-stepper-header>
-        <v-stepper-step :complete="step > 1" step="1">
-          Name of step 1
-        </v-stepper-step>
-
-        <v-divider></v-divider>
-
-        <v-stepper-step :complete="step > 2" step="2">
-          Name of step 2
-        </v-stepper-step>
-
-        <v-divider></v-divider>
-
-        <v-stepper-step step="3">
-          Name of step 3
-        </v-stepper-step>
-      </v-stepper-header>
-
-      <v-stepper-items>
-        <v-stepper-content step="1">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-
-        </v-stepper-content>
-
-        <v-stepper-content step="2">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-
-        </v-stepper-content>
-
-        <v-stepper-content step="3">
-          <v-card class="mb-12" color="grey lighten-1" height="200px"></v-card>
-
-        </v-stepper-content>
-      </v-stepper-items>
-    </v-stepper>
+    <v-dialog :value="active">
+      <v-stepper v-model="step">
+        <v-stepper-header>
+          <v-stepper-step :complete="step > 1" step="1">
+            Select type
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :complete="step > 2" step="2">
+            Upload video
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :complete="step > 3" step="3">
+            Trick information
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="4">
+            Confirmation
+          </v-stepper-step>
+        </v-stepper-header>
+        <v-stepper-items>
+          <v-stepper-content step="1">
+            <div class="d-flex flex-column align-center">
+              <v-btn class="my-2" @click="setType(uploadedType.TRICK)">Video</v-btn>
+              <v-btn class="my-2" @click="setType(uploadedType.SUBMISSION)">Submission</v-btn>
+            </div>
+          </v-stepper-content>
+          <v-stepper-content step="2">
+            <v-file-input show-size label="File input" accept="video/*" @change="handleFile"></v-file-input>
+          </v-stepper-content>
+          <v-stepper-content step="3">
+            <v-text-field v-model="trickName"></v-text-field>
+            <v-btn @click="saveTrick">Save trick</v-btn>
+          </v-stepper-content>
+          <v-stepper-content step="4">
+            Success
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-stepper>
+      <div class="justify-center d-flex my-4">
+        <v-btn @click="toggleActivity">Close</v-btn>
+      </div>
+    </v-dialog>
     <v-btn @click="resetTricks">Reset tricks</v-btn>
   </div>
 </template>
@@ -55,36 +57,50 @@
 <script>
 
 import {mapState, mapActions, mapMutations} from 'vuex'
-import Axios from "axios";
+import {UPLOAD_TYPE} from '~/data/enum.js'
 
 export default {
 
   data: () => ({
     trickName: "",
-    step: 1
+    step: 1,
+
   }),
   computed: {
-    ...mapState('tricks', {
-      tricks: state => state.tricks
-    })
+    ...mapState('tricks', ['tricks']),
+    ...mapState('videos', ['uploadPromise', 'active', "uploadtype"]),
+    uploadedType: {...UPLOAD_TYPE},
+
   },
   methods: {
     ...mapMutations('tricks', {
       resetTricks: 'reset'
     }),
-    ...mapActions('tricks', ['createTrick']),
-    async saveTrick() {
+    ...mapMutations('videos', ['reset', 'toggleActivity', 'setType']),
+    ...mapActions('videos', ['uploadVideo', 'createTrick']),
 
-      await this.createTrick({trick: {name: this.trickName}})
-    },
+
+
     async handleFile(file) {
       if (!file)
         return;
-      console.log(file)
-      const result = new FormData();
-      result.append("video", file)
-      await Axios.post('http://localhost:5000/api/videos', result);
-    }
+      const form = new FormData();
+      form.append("video", file)
+      console.log({form})
+      await this.uploadVideo({form});
+      this.step++;
+    },
+    async saveTrick() {
+      if (!this.uploadPromise) {
+        console.log('File wasn\'t uploaded');
+        return;
+      }
+      const video = await this.uploadPromise;
+      console.log(video);
+      await this.createTrick({trick: {name: this.trickName, video}})
+      this.step++;
+      this.reset();
+    },
   }
 }
 </script>

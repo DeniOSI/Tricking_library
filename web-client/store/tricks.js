@@ -1,5 +1,3 @@
-import Axios from "axios";
-
 const initState = () =>({
   tricks : []
 })
@@ -14,17 +12,11 @@ export const mutations = {
     Object.assign(state, initState())
   }
 }
-
 export const actions = {
   async fetchTricks({commit}){
-    const tricks = (await  this.$axios.$get("http://localhost:5000/api/tricks"));
+    const tricks = (await  this.$axios.$get("/api/tricks"));
     console.log(tricks);
     commit('setTricks', {tricks});
   },
-  async createTrick({commit, dispatch}, {trick})
-  {
-    await this.$axios.$post("http://localhost:5000/api/tricks", trick);
-    dispatch('fetchTricks');
-  }
 }
 
