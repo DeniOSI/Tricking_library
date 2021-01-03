@@ -2,3 +2,5 @@
 /TrickingLibrary.Api/bin/*
 .idea/*
 .vs/*
+/TrickingLibrary.Core/bin/*
+/TrickingLibrary.Core/obj/*

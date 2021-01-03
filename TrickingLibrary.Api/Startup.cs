@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +11,7 @@ namespace TrickingLibrary.Api
 {
     public class Startup
     {
+        const int MaxRequestLimit = 737280000;
         private const string CorsPolicyAll = "All";
         public Startup(IConfiguration configuration)
         {
@@ -26,8 +29,17 @@ namespace TrickingLibrary.Api
                         .AllowAnyHeader()
                         .AllowAnyOrigin())
             );
-            
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.MaxRequestBodySize = MaxRequestLimit;
+            });
             services.AddSingleton(typeof(TrickyStore));
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = MaxRequestLimit;
+                x.MultipartBodyLengthLimit = MaxRequestLimit;
+                x.MultipartHeadersLengthLimit = MaxRequestLimit;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
