@@ -7,12 +7,12 @@ using TrickingLibrary.Models;
 namespace TrickingLibrary.Api.Controllers
 {
     [ApiController]
-    [Route("api/tricks")]
-    public class TricksController : ControllerBase
+    [Route("api/submissions")]
+    public class SubmissionController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
 
-        public TricksController(AppDbContext appDbContext)
+        public SubmissionController(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
@@ -20,13 +20,13 @@ namespace TrickingLibrary.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_appDbContext.Tricks.ToList());
+            return Ok(_appDbContext.Submissions.ToList());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetTrickById([FromRoute] int id)
         {
-            return Ok(_appDbContext.Tricks.Where(tr => tr.Id == id));
+            return Ok(_appDbContext.Submissions.Where(tr => tr.Id == id));
         }
 
         [HttpGet("{trickid}/submissions")]
@@ -36,30 +36,30 @@ namespace TrickingLibrary.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Trick trick)
+        public async Task<IActionResult> Create([FromBody] Submission submission)
         {
-            _appDbContext.Add(trick);
+            _appDbContext.Add(submission);
             await _appDbContext.SaveChangesAsync();
             return Ok();
         }
 
         [HttpPut]
-        public async Task<Trick> Update(Trick trick)
+        public async Task<Submission> Update(Submission submission)
         {
-            if (trick.Id == 0)
+            if (submission.Id == 0)
                 return null;
-            _appDbContext.Add(trick);
+            _appDbContext.Add(submission);
             await _appDbContext.SaveChangesAsync();
-            return trick;
+            return submission;
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var trick = _appDbContext.Tricks.FirstOrDefault(tr => tr.Id == id && !tr.Deleted);
-            if (trick == null)
-                return NoContent();
-            trick.Deleted = true;
+            var submission = _appDbContext.Submissions.FirstOrDefault(tr => tr.Id == id && !tr.Deleted);
+            if (submission == null)
+                return NotFound();
+            submission.Deleted = true;
             await _appDbContext.SaveChangesAsync();
             return Ok();
         }

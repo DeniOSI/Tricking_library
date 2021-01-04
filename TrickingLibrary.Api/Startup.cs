@@ -8,17 +8,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TrickingLibrary.Data;
 
-
 namespace TrickingLibrary.Api
 {
     public class Startup
     {
-        const int MaxRequestLimit = 737280000;
+        private const int MaxRequestLimit = 737280000;
         private const string CorsPolicyAll = "All";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
+
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
@@ -35,7 +36,7 @@ namespace TrickingLibrary.Api
             {
                 options.Limits.MaxRequestBodySize = MaxRequestLimit;
             });
-            services.AddDbContext<Data.AppDbContext>(option=>option.UseInMemoryDatabase("dev"));
+            services.AddDbContext<AppDbContext>(option => option.UseInMemoryDatabase("dev"));
             services.Configure<FormOptions>(x =>
             {
                 x.ValueLengthLimit = MaxRequestLimit;
@@ -46,10 +47,7 @@ namespace TrickingLibrary.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
             app.UseCors(CorsPolicyAll);
             app.UseHttpsRedirection();
 

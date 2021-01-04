@@ -1,14 +1,10 @@
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using TrickingLibrary.Core.Enum;
-using MediaTypeHeaderValue = Microsoft.Net.Http.Headers.MediaTypeHeaderValue;
 
 namespace TrickingLibrary.Api.Controllers
 {
@@ -20,7 +16,7 @@ namespace TrickingLibrary.Api.Controllers
 
         public VideosController(IWebHostEnvironment webHost)
         {
-            this._webHost = webHost;
+            _webHost = webHost;
         }
 
         [HttpGet("{video}")]

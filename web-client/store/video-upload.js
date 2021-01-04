@@ -1,3 +1,5 @@
+import {UPLOAD_TYPE} from "~/data/enum";
+
 const initState = () => ({
   uploadPromise: null,
   active: false,
@@ -12,7 +14,10 @@ export const mutations = {
   },
   setType(state, {type}) {
     state.type = type
+    if(state.type === UPLOAD_TYPE.TRICK)
     state.step++
+    else
+      state.step+=2
   },
   toggleActivity( state) {
     state.active = !state.active
