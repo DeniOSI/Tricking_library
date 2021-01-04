@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TrickingLibrary.Data;
 
 
 namespace TrickingLibrary.Api
@@ -33,12 +35,12 @@ namespace TrickingLibrary.Api
             {
                 options.Limits.MaxRequestBodySize = MaxRequestLimit;
             });
-            services.AddSingleton(typeof(TrickyStore));
+            services.AddDbContext<Data.AppDbContext>(option=>option.UseInMemoryDatabase("dev"));
             services.Configure<FormOptions>(x =>
             {
                 x.ValueLengthLimit = MaxRequestLimit;
                 x.MultipartBodyLengthLimit = MaxRequestLimit;
-                x.MultipartHeadersLengthLimit = MaxRequestLimit;
+                x.MultipartHeadersCountLimit = MaxRequestLimit;
             });
         }
 

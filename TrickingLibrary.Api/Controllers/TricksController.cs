@@ -4,7 +4,10 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.EntityFrameworkCore;
 using TrickingLibrary.Api.Models;
+using TrickingLibrary.Data;
+using TrickingLibrary.Models;
 
 namespace TrickingLibrary.Api.Controllers
 {
@@ -12,28 +15,29 @@ namespace TrickingLibrary.Api.Controllers
     [Route("api/tricks")]
     public class TricksController : ControllerBase
     {
-        private readonly TrickyStore _trickyStore;
+        private readonly AppDbContext _appDbContext;
 
-        public TricksController(TrickyStore trickyStore)
+        public TricksController(AppDbContext appDbContext)
         {
-            this._trickyStore = trickyStore;
+            this._appDbContext = appDbContext;
         }
 
         // api/tricks
         [HttpGet]
-        public IActionResult Get() => Ok( _trickyStore.All());
+        public IActionResult Get() => Ok( _appDbContext.Tricks.ToList() );
 
         // api/tricks/1
         [HttpGet("{id}")]
         public IActionResult GetById([FromRoute] int id)
         {
-           return Ok(_trickyStore.All().FirstOrDefault(x=>x.Id.Equals(id)));
+           return Ok(_appDbContext.Tricks.Where(tr=>tr.Id ==id));
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Trick trick)
+        public async Task<IActionResult> Create([FromBody] Trick trick)
         {
-            _trickyStore.Add(trick); 
+            _appDbContext.Add(trick);
+            await  _appDbContext.SaveChangesAsync();
             return Ok();
         }
 

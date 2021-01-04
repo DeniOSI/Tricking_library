@@ -4,3 +4,9 @@
 .vs/*
 /TrickingLibrary.Core/bin/*
 /TrickingLibrary.Core/obj/*
+/TrickingLibrary.Models/obj/*
+/TrickingLibrary.Models/bin/*
+/TrickingLibrary.Data/obj/*
+/TrickingLibrary.Data/bin/*
+
+/TrickingLibrary.Api/wwwroot/*
