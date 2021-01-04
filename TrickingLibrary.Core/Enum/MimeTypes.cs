@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace TrickingLibrary.Core.Enum
 {
-    
-    
     public static class MimeTypes
     {
-        private static IDictionary<string, string> _mappings =
+        public const string Video = "video/*";
+
+        private static readonly IDictionary<string, string> _mappings =
             new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
             {
                 #region Big freaking list of mime types
@@ -578,26 +578,17 @@ namespace TrickingLibrary.Core.Enum
 
                 #endregion
             };
-        
-        
+
 
         public static string GetMimeType(string extension)
         {
-            if (extension == null)
-            {
-                throw new ArgumentNullException("extension");
-            }
+            if (extension == null) throw new ArgumentNullException("extension");
 
-            if (!extension.StartsWith("."))
-            {
-                extension = "." + extension;
-            }
+            if (!extension.StartsWith(".")) extension = "." + extension;
 
             string mime;
 
             return _mappings.TryGetValue(extension, out mime) ? mime : "application/octet-stream";
         }
-
-        public const string Video = "video/*";
     }
 }

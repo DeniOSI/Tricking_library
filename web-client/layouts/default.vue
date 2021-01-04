@@ -7,6 +7,7 @@
         UPLOAD
       </v-btn>
     </v-app-bar>
+    <video-upload/>
     <v-main>
       <nuxt/>
     </v-main>
@@ -14,7 +15,9 @@
 </template>
 <script>
 import {mapMutations} from 'vuex'
+import VideoUpload from '~/components/video-upload'
 export default {
-  methods: mapMutations('videos', ['toggleActivity']),
+  methods: mapMutations('video-upload', ['toggleActivity']),
+  components : {VideoUpload}
 }
 </script>
