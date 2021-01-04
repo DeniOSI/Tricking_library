@@ -40,7 +40,7 @@ namespace TrickingLibrary.Api.Controllers
         {
             _appDbContext.Add(trick);
             await _appDbContext.SaveChangesAsync();
-            return Ok();
+            return Ok(trick.Id);
         }
 
         [HttpPut]

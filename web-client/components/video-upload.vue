@@ -22,7 +22,7 @@
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step :complete="step > 4" step="4">
-          Trick information
+          Description
         </v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step step="5">
@@ -39,19 +39,20 @@
         <v-stepper-content step="2">
           <div>
             <v-text-field v-model="trickName" label="Trick name"></v-text-field>
-            <v-btn @click="saveTrick">Save trick</v-btn>
+            <v-btn @click="stepInc">Save trick</v-btn>
           </div>
         </v-stepper-content>
-          <v-stepper-content step="3">
-            <v-file-input show-size label="File input" accept="video/*" @change="handleFile"></v-file-input>
-          </v-stepper-content>
-          <v-stepper-content step="4">
-            <v-text-field v-model="trickName"></v-text-field>
-            <v-btn @click="saveTrick">Save trick</v-btn>
-          </v-stepper-content>
-          <v-stepper-content step="5">
-            Success
-          </v-stepper-content>
+        <v-stepper-content step="3">
+          <v-file-input show-size label="File input" accept="video/*" @change="handleFile"></v-file-input>
+        </v-stepper-content>
+        <v-stepper-content step="4">
+          <v-text-field v-model="description"></v-text-field>
+          <v-btn @click="stepInc">Save trick</v-btn>
+        </v-stepper-content>
+        <v-stepper-content step="5">
+          Success
+          <v-btn @click="saveTrick">Save </v-btn>
+        </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
     <div class="justify-center d-flex my-4">
@@ -68,19 +69,19 @@ export default {
   name: "video-upload",
   data: () => ({
     trickName: "",
+    description: ""
 
   }),
   computed: {
     ...mapState('video-upload', ['uploadPromise', 'active', "step", "type"])
   },
   methods: {
-    ...mapMutations('video-upload', ['reset', 'toggleActivity', 'setType']),
+    ...mapMutations('video-upload', ['reset', 'toggleActivity', 'setType', 'stepInc']),
     ...mapActions('video-upload', ['uploadVideo', 'createTrick']),
 
     uploadedType() {
       return UPLOAD_TYPE
     },
-
     async handleFile(file) {
       if (!file)
         return;
@@ -97,7 +98,9 @@ export default {
       }
       const video = await this.uploadPromise;
       console.log(video);
-      await this.createTrick({trick: {name: this.trickName, video}})
+      await this.createTrick(
+        {trick: {name: this.trickName},
+        submission:{video, description: this.description  }})
       this.reset();
     },
 

@@ -44,7 +44,7 @@ namespace TrickingLibrary.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<Submission> Update(Submission submission)
+        public async Task<Submission> Update([FromBody] Submission submission)
         {
             if (submission.Id == 0)
                 return null;

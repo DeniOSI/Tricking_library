@@ -26,16 +26,24 @@ export const mutations = {
   },
   reset(state) {
     Object.assign(state, initState())
-
+  },
+  stepInc(state)
+  {
+    state.step++;
   }
+
 }
 export const actions = {
   async uploadVideo({commit, dispatch}, {form}) {
     const task = this.$axios.$post('/api/videos', form);
     commit('setTask', {task});
   },
-  async createTrick({commit, dispatch}, {trick}) {
-    await this.$axios.$post("/api/tricks", trick);
+  async createTrick({commit, dispatch}, {trick, submission}) {
+   const trickId =  await this.$axios.$post("/api/tricks", trick);
+   console.log('submission ', submission)
+    submission.trickId =  trickId;
+    console.log('submission: ', submission)
+    await this.$axios.$post("/api/submissions", submission);
     await dispatch('tricks/fetchTricks')
   }
 }
