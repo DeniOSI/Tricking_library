@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -24,20 +25,22 @@ namespace TrickingLibrary.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetTrickById([FromRoute] int id)
+        public IActionResult GetTrickById([FromRoute] string id)
         {
-            return Ok(_appDbContext.Tricks.Where(tr => tr.Id == id));
+            return Ok(_appDbContext.Tricks.Where(tr => tr.Id.Equals(id, StringComparison.InvariantCulture)));
         }
 
         [HttpGet("{trickid}/submissions")]
-        public IActionResult ListSubmissionsForTrick([FromRoute] int trickid)
+        public IActionResult ListSubmissionsForTrick([FromRoute] string trickid)
         {
-            return Ok(_appDbContext.Submissions.Where(tr => tr.TrickId == trickid));
+            return Ok(_appDbContext.Submissions.Where(tr =>
+                tr.TrickId.Equals(trickid, StringComparison.InvariantCulture)));
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Trick trick)
         {
+            trick.Id = trick.Name.Replace(" ", "_").ToLowerInvariant();
             _appDbContext.Add(trick);
             await _appDbContext.SaveChangesAsync();
             return Ok(trick.Id);
@@ -46,7 +49,7 @@ namespace TrickingLibrary.Api.Controllers
         [HttpPut]
         public async Task<Trick> Update(Trick trick)
         {
-            if (trick.Id == 0)
+            if (string.IsNullOrEmpty(trick.Id))
                 return null;
             _appDbContext.Add(trick);
             await _appDbContext.SaveChangesAsync();
@@ -54,9 +57,10 @@ namespace TrickingLibrary.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] string id)
         {
-            var trick = _appDbContext.Tricks.FirstOrDefault(tr => tr.Id == id && !tr.Deleted);
+            var trick = _appDbContext.Tricks.FirstOrDefault(tr =>
+                tr.Id.Equals(id, StringComparison.InvariantCulture) && !tr.Deleted);
             if (trick == null)
                 return NoContent();
             trick.Deleted = true;

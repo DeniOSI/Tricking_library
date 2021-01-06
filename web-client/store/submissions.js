@@ -13,11 +13,11 @@ export const mutations = {
   }
 }
 export const actions = {
-  async fetchSubmissions({commit}){
+  async fetchSubmissionsForTrick({commit}, {trickid}){
 
-    const submissions = (await  this.$axios.$get("/api/submissions"));
-    console.log(submissions);
-    commit('setSubmission', {submissions});
+    const submission = (await  this.$axios.$get(`/api/tricks/${trickid}/submissions`));
+    console.log(submission);
+    commit('setSubmission', {submission});
   },
 }
 

@@ -1,8 +1,8 @@
 namespace TrickingLibrary.Models
 {
-    public abstract class BaseModel
+    public abstract class BaseModel<Tkey>
     {
-        public long Id { get; set; }
+        public Tkey Id { get; set; }
         public bool Deleted { get; set; }
     }
 }
