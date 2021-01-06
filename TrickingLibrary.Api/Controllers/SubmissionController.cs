@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +30,11 @@ namespace TrickingLibrary.Api.Controllers
             return Ok(_appDbContext.Submissions.Where(tr => tr.Id == id));
         }
 
-        [HttpGet("{trickid}/submissions")]
-        public IActionResult ListSubmissionsForTrick([FromRoute] int trickid)
+        [HttpGet("{trickId}/submissions")]
+        public IActionResult ListSubmissionsForTrick([FromRoute] string trickId)
         {
-            return Ok(_appDbContext.Submissions.Where(tr => tr.TrickId == trickid));
+            return Ok(_appDbContext.Submissions.Where(tr =>
+                tr.TrickId.Equals(trickId, StringComparison.InvariantCulture)));
         }
 
         [HttpPost]
