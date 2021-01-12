@@ -9,11 +9,11 @@ namespace TrickingLibrary.Api.Controllers
 {
     [ApiController]
     [Route("api/submissions")]
-    public class SubmissionController : ControllerBase
+    public class SubmissionsController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
 
-        public SubmissionController(AppDbContext appDbContext)
+        public SubmissionsController(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

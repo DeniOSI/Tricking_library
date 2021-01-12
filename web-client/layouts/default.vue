@@ -3,21 +3,22 @@
     <v-app-bar app dense>
       <v-toolbar-title>Tricking library</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn @click="toggleActivity" depressed>
-        UPLOAD
-      </v-btn>
+<!--      <v-btn @click="toggleActivity" depressed>-->
+<!--        UPLOAD-->
+<!--      </v-btn>-->
     </v-app-bar>
-    <video-upload/>
+    <content-creation/>
     <v-main>
       <nuxt/>
+
     </v-main>
   </v-app>
 </template>
 <script>
 import {mapMutations} from 'vuex'
-import VideoUpload from '~/components/video-upload'
+import ContentCreation from '../components/content-creation/content-creation-dialog'
 export default {
-  methods: mapMutations('video-upload', ['toggleActivity']),
-  components : {VideoUpload}
+
+  components : {ContentCreation}
 }
 </script>

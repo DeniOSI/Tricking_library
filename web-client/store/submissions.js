@@ -6,18 +6,21 @@ export const state = initState
 
 export const mutations = {
   setSubmission(state, {submissions}){
-    state.submissions = submissions
+    state.submissions = {submissions}
   },
   reset(state){
     Object.assign(state, initState())
   }
 }
 export const actions = {
-  async fetchSubmissionsForTrick({commit}, {trickid}){
+  async fetchSubmissionsForTrick({commit}, {trickId}){
 
-    const submission = (await  this.$axios.$get(`/api/tricks/${trickid}/submissions`));
-    console.log(submission);
-    commit('setSubmission', {submission});
+    const submissions = (await  this.$axios.$get(`/api/tricks/${trickId}/submissions`));
+    commit('setSubmission', {submissions});
   },
+
+  createSubmission({commit, dispatch}, {form}) {
+  return this.$axios.$post("/api/submissions", form);
+}
 }
 
