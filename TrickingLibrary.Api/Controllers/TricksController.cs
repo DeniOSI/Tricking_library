@@ -30,11 +30,11 @@ namespace TrickingLibrary.Api.Controllers
             return Ok(_appDbContext.Tricks.Where(tr => tr.Id.Equals(id, StringComparison.InvariantCulture)));
         }
 
-        [HttpGet("{trickid}/submissions")]
-        public IActionResult ListSubmissionsForTrick([FromRoute] string trickid)
+        [HttpGet("{trickId}/submissions")]
+        public IActionResult ListSubmissionsForTrick([FromRoute] string trickId)
         {
             return Ok(_appDbContext.Submissions.Where(tr =>
-                tr.TrickId.Equals(trickid, StringComparison.InvariantCulture)));
+                tr.TrickId.Equals(trickId, StringComparison.InvariantCulture)));
         }
 
         [HttpPost]
