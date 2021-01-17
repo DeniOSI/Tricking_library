@@ -6,8 +6,9 @@
     <div>
       <div v-if="submissions">
         <div v-for="s in submissions">
-          <video width="400" controls :src="`http://localhost:5000/api/videos/${s.video}`">
-          </video>
+          <div v-for="ss in s">
+            <video width="400" controls :src="`http://localhost:5000/api/videos/${ss.video}`">  </video>
+          </div>
         </div>
       </div>
     </div>

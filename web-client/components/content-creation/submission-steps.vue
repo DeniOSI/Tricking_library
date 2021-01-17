@@ -40,8 +40,6 @@
         <v-btn @click="step++">Next</v-btn>
       </v-stepper-content>
       <v-stepper-content step="4">
-        Success
-        <v-btn @click="save">Save</v-btn>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -51,7 +49,7 @@
 <script>
 import {mapGetters, mapActions, mapMutations} from 'vuex'
 
-const initState = {
+const initState = () =>({
   form: {
     trickId: "",
     description: "",
@@ -59,7 +57,7 @@ const initState = {
   },
   step: 1
 
-}
+})
 export default {
   name: "submission-steps",
   data: initState,

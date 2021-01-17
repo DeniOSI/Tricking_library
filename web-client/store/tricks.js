@@ -4,7 +4,9 @@ const initState = () =>({
 
 export const state = initState
 export const getters = {
-  trickItems : state => state.tricks.map(x=>({text: x.name, value: x.id}))
+
+  trickItems : state => state.tricks.map(x=>({text: x.name, value: x.id})),
+
 }
 
 export const mutations = {
@@ -21,7 +23,8 @@ export const actions = {
     commit('setTricks', {tricks});
   },
   async createTrick({commit, dispatch}, {form}) {
-    return this.$axios.$post("/api/tricks", form);
+     await this.$axios.$post("/api/tricks", form);
+     dispatch('fetchTricks')
   }
 }
 

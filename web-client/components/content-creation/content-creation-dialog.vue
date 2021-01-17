@@ -1,6 +1,5 @@
 <template>
   <div>
-  <v-dialog :value="active" persistent>
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -9,15 +8,14 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in menuItem" :key="`ccd-menu-${index}`" @click='activate(item.component)'>
+          <v-list-item v-for="(item, index) in menuItem" :key="`ccd-menu-${index}`" @click='activate({component: item.component})'>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-
-    <trick-steps/>
-    <submission-steps/>
-
+    <v-dialog :value="active" width="700" persistent>
+<!--    <TrickSteps/>-->
+<!--    <submission-steps/>-->
 
       <div v-if="component">
         <component :is="component"></component>
@@ -26,7 +24,7 @@
       <v-btn @click="reset">Close</v-btn>
     </div>
   </v-dialog>
-    Component: {{menuItem.map(x=>(x.component, x.title))}}
+
   </div>
 </template>
 
@@ -36,7 +34,7 @@ import TrickSteps from './trick-steps'
 import SubmissionSteps from './submission-steps'
 
 export default {
-  name: "video-upload",
+  name: "content-creation-dialog",
 
   computed: {
     ...mapState('video-upload', ['active', 'component']),

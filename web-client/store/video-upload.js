@@ -1,4 +1,3 @@
-import {UPLOAD_TYPE} from "~/data/enum";
 
 const initState = () => ({
   uploadPromise: null,
